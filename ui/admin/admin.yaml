@@ -1,0 +1,488 @@
+about:
+  date: November 11, 2024 15:23:44
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 13
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Administration:
+    attributes:
+    - label: ' admin_name*'
+      name: admin_name
+      required: true
+      search: true
+      sort: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    - name: id
+    description: Administration data for the business.
+    info_list: Administration data for the business.
+    type: Administration
+    user_key: admin_name
+  Dog:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: owner_id
+      required: true
+    - name: size
+      required: true
+    - name: notes
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    - name: id
+    - name: breed
+      required: true
+    description: Represents a dog belonging to an owner.
+    info_list: Represents a dog belonging to an owner.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Dog
+    user_key: name
+  Owner:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: address
+      required: true
+    - name: phone
+      required: true
+    - name: email
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    - name: id
+    description: Represents a dog owner who requests services.
+    info_list: Represents a dog owner who requests services.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - owner_id
+      name: DogList
+      resource: Dog
+    - direction: tomany
+      fks:
+      - owner_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - owner_id
+      name: PaymentInformationList
+      resource: PaymentInformation
+    - direction: tomany
+      fks:
+      - owner_id
+      name: WalkRequestList
+      resource: WalkRequest
+    - direction: tomany
+      fks:
+      - owner_id
+      name: WalkerReviewList
+      resource: WalkerReview
+    type: Owner
+    user_key: name
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+      required: true
+    - name: walk_schedule_id
+      required: true
+    - name: walker_id
+      required: true
+    - name: amount
+      required: true
+    - name: status
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    - name: payment_method
+      required: true
+    description: Records payments to walkers after a walk is completed.
+    info_list: Records payments to walkers after a walk is completed.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walk_schedule_id
+      name: walk_schedule
+      resource: WalkSchedule
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Payment
+    user_key: id
+  PaymentInformation:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+      required: true
+    - name: service
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: Stores payment information for an owner.
+    info_list: Stores payment information for an owner.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: PaymentInformation
+    user_key: id
+  WalkMonitoring:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: walk_schedule_id
+      required: true
+    - name: start_time
+      type: DATETIME
+    - name: end_time
+      type: DATETIME
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: Monitors the start and end of a walk.
+    info_list: Monitors the start and end of a walk.
+    tab_groups:
+    - direction: toone
+      fks:
+      - walk_schedule_id
+      name: walk_schedule
+      resource: WalkSchedule
+    type: WalkMonitoring
+    user_key: id
+  WalkRequest:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+      required: true
+    - name: date
+      required: true
+      type: DATE
+    - name: time
+      required: true
+    - name: duration
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: A request made by an owner for a dog walk.
+    info_list: A request made by an owner for a dog walk.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walk_request_id
+      name: WalkScheduleList
+      resource: WalkSchedule
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: WalkRequest
+    user_key: id
+  WalkSchedule:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: walk_request_id
+      required: true
+    - name: walker_id
+      required: true
+    - name: status
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: Schedules a walk after a walker accepts a request.
+    info_list: Schedules a walk after a walker accepts a request.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walk_schedule_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - walk_schedule_id
+      name: WalkMonitoringList
+      resource: WalkMonitoring
+    - direction: tomany
+      fks:
+      - walk_schedule_id
+      name: WalkerReviewList
+      resource: WalkerReview
+    - direction: toone
+      fks:
+      - walk_request_id
+      name: walk_request
+      resource: WalkRequest
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: WalkSchedule
+    user_key: id
+  Walker:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      required: true
+      search: true
+      sort: true
+    - name: last_name
+      required: true
+    - name: postal_code
+      required: true
+    - name: phone
+      required: true
+    - name: email
+      required: true
+    - name: max_dogs_per_walk
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    - name: id
+    description: Represents a dog walker who registers and provides services.
+    info_list: Represents a dog walker who registers and provides services.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walker_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkScheduleList
+      resource: WalkSchedule
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkerAvailabilityList
+      resource: WalkerAvailability
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkerRateList
+      resource: WalkerRate
+    type: Walker
+    user_key: first_name
+  WalkerAvailability:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: walker_id
+      required: true
+    - name: day_of_week
+      required: true
+    - name: time_of_day
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: Records the days of the week and times a walker is available.
+    info_list: Records the days of the week and times a walker is available.
+    tab_groups:
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: WalkerAvailability
+    user_key: id
+  WalkerRate:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: walker_id
+      required: true
+    - name: dog_size
+      required: true
+    - name: duration
+      required: true
+    - name: price
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: Sets the price for walks based on dog size and duration.
+    info_list: Sets the price for walks based on dog size and duration.
+    tab_groups:
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: WalkerRate
+    user_key: id
+  WalkerReview:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+      required: true
+    - name: walk_schedule_id
+      required: true
+    - name: review_text
+    - name: rating
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    - name: updated_date
+      required: true
+      type: DATETIME
+    - name: created_by
+      required: true
+    description: Stores reviews given by owners about walkers.
+    info_list: Stores reviews given by owners about walkers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walk_schedule_id
+      name: walk_schedule
+      resource: WalkSchedule
+    type: WalkerReview
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
